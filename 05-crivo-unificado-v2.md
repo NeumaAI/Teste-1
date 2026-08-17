@@ -151,10 +151,10 @@ diferentes e duas curvas de aprendizado diferentes — dentro de 4h/dia e WIP=1.
 
 ## O que NÃO foi avaliado (e não deve ser lido como aprovado)
 
-- **FASE 2** — 13 critérios de fit interno. Observação para quando houver exceção:
-  **[13 CRITÉRIOS NÃO LOCALIZADOS - "Matriz de Teses Jurídicas Puras" ausente do
-  contexto]**. Não estão neste repo nem em nenhum arquivo desta sessão. Precisam
-  ser anexados antes de a Fase 2 rodar — não serão reconstruídos de memória.
+- **FASE 2** — 13 critérios de fit interno. **Localizados posteriormente nesta
+  sessão** em `matriz-teses-juridicas-legaltech.md` (Google Drive, 17/08/2026) —
+  ver `06-crivo-v2-alongamento-mcr-264.md`, onde são aplicados como estão
+  escritos. A lacuna registrada antes está resolvida.
 - **FASE 3** — 5 critérios de mercado. Não rodada.
 - **FASE 4** — 13 critérios de captura e moat. Não rodada.
 - **FASE 5** — concorrência em 3 eixos. Não rodada.

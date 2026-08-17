@@ -14,6 +14,8 @@ Pré-projeto de um serviço produtizado de **criação de sites otimizados para 
 | [`02-pedido-estruturado.md`](02-pedido-estruturado.md) | O pedido calibrado — briefing canônico do produto |
 | [`03-pre-projeto-produto.md`](03-pre-projeto-produto.md) | O produto montado: escopo, preço, SOP, argumentos de venda, prospecção ativa |
 | [`04-gates-antes-de-rodar.md`](04-gates-antes-de-rodar.md) | O que precisa ser verificado antes de vender a primeira unidade |
+| [`05-crivo-unificado-v2.md`](05-crivo-unificado-v2.md) | Crivo v2 aplicado a este pré-projeto → **BACKLOG-T6**. Contém a regra revisada: **CEF não é gate** |
+| [`06-crivo-v2-alongamento-mcr-264.md`](06-crivo-v2-alongamento-mcr-264.md) | Crivo v2 completo (Fases 1–6) na tese de topo da Onda 1 — Alongamento MCR 2.6.4 → **DORMENTE, revisão 24/08/2026** |
 
 ## Convenção de confiança
 
