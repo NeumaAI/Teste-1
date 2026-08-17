@@ -11,29 +11,52 @@
 
 ---
 
+## REGRA REVISADA — CEF NÃO É GATE (determinação de Rodrigo, 17/08/2026)
+
+Vale para este e para todos os crivos seguintes. Substitui o comportamento
+anterior do Gate 0(a).
+
+1. **Não existe FLAG CEF eliminatória.** A presença da Caixa em qualquer polo, ou
+   a proximidade do tema com matéria CEF, **se sinaliza e segue**. Não é gate,
+   não é veto, não é condição, não reprova nada.
+2. **Toda tese que antes teria sido travada ou restringida por flag CEF passa
+   todos os filtros.** Se ela morrer, morre em outro critério — mérito, fila,
+   canal, dinheiro — nunca em proximidade com a Caixa.
+3. **Onde Rodrigo não pode atuar como advogado, a matéria não morre: muda de
+   forma.** Vira legaltech, produto de MEIO, tecnologia, ideia a ceder a
+   parceiro, ou tema sobre o qual falar publicamente. Insider CEF é insumo, não
+   impedimento — e é justamente o ativo [A].
+4. **O único limite que resta** é o art. 30, I, da Lei 8.906/94: Rodrigo não
+   assina como advogado postulando contra a Caixa. Isso é um limite de **papel
+   numa peça específica**, e se resolve com polo ativo da irmã ou de parceiro
+   externo. Não é filtro de tese, não é filtro de cliente, e não sobe para gate.
+
+**Efeito neste documento:** o antigo "Flag 0.a-1" (normativo interno CEF sobre
+atividade paralela) foi **excluído**. Não era compliance da OAB, não era gate, e
+não volta.
+
+**Efeito nos documentos do pré-projeto:** três linhas de exclusão de cliente por
+vínculo CEF foram removidas de `02-pedido-estruturado.md` (duas) e
+`03-pre-projeto-produto.md` §8.1 (uma). Um comércio local que tenha conta,
+crédito ou qualquer relação com a Caixa é cliente elegível como qualquer outro —
+o produto é site e medição, não postulação.
+
+---
+
 ## FASE 1 — GATES DE ELIMINAÇÃO
 
 ### GATE 0 — COMPLIANCE → **PASSA, com dois flags**
 
-**a) A CEF aparece em algum polo?** → **NÃO. Sem FLAG CEF.**
+**a) A CEF aparece em algum polo?** → **NÃO — e, pela regra revisada, isso não
+seria gate mesmo se aparecesse.**
 
-[VERIFICADO - `02-pedido-estruturado.md`, seção "Cliente que NÃO entra": "Qualquer
-vínculo com a CEF"] e [VERIFICADO - `03-pre-projeto-produto.md` §8.1, camada 4 do
-filtro de lista: "qualquer vínculo CEF"]. A exclusão é explícita e está escrita no
-filtro operacional de prospecção, não só no preâmbulo — é regra executável, não
-intenção.
+Não há postulação contra a Caixa nem contra ninguém: o entregável é site e
+medição em IAs [VERIFICADO - `03-pre-projeto-produto.md` §3, Blocos A a E]. O art.
+30, I, da Lei 8.906/94 não é acionado.
 
-O art. 30, I, da Lei 8.906/94 não é acionado aqui: não há postulação contra a
-Caixa, nem contra ninguém. A tese não exige Rodrigo contra a CEF.
-
-**Flag 0.a-1 — não é art. 30, é outra norma.** O impedimento potencial que sobra
-não é da OAB, é do empregador: exercício de atividade empresarial paralela por
-empregado da CEF, e eventual conflito de interesse. [ESPECULAÇÃO] — não tenho o
-Código de Conduta / normativo interno CEF em contexto e não vou inventar o que ele
-diz. **O que faria virar dado:** ler o normativo interno de conduta/atividade
-privada da CEF e checar se há exigência de comunicação ou vedação a sócio-
-administrador de PJ. Custo: 30 min, acesso interno. Isso é anterior a qualquer
-venda, e é independente do resultado deste crivo.
+Registro apenas como sinalização, sem efeito de gate: as três linhas que excluíam
+cliente por vínculo CEF foram removidas dos documentos do pré-projeto. Comércio
+local com relação bancária com a Caixa entra no funil como qualquer outro.
 
 **b) Atividade-FIM ou MEIO?** → **MEIO, declarado.**
 
@@ -146,13 +169,14 @@ O que existe é: **BACKLOG-T6**.
 
 | Classificação | Células | % |
 |---|---|---|
-| [VERIFICADO - documento do repo] | 8 | 62% |
-| [INFERÊNCIA] | 3 | 23% |
-| [ESPECULAÇÃO] | 1 | 8% |
-| [DECAY] | 1 | 8% |
+| [VERIFICADO - documento do repo] | 7 | 64% |
+| [INFERÊNCIA] | 3 | 27% |
+| [DECAY] | 1 | 9% |
+| [ESPECULAÇÃO] | 0 | 0% |
 
-Total: 13 células, todas dentro do Gate 0 e do Gate 1. ESPECULAÇÃO em 8% — abaixo
-do limite de 40%. **Ressalva honesta:** esse número só é bom porque o escopo
+Total: 11 células, todas dentro do Gate 0 e do Gate 1. ESPECULAÇÃO em 0% — a única
+célula especulativa era o antigo Flag 0.a-1, excluído pela regra revisada.
+**Ressalva honesta:** esse número só é bom porque o escopo
 avaliado foi pequeno. Compliance e enquadramento de fila se verificam em documento;
 mercado, moat e concorrência não — e é lá que a especulação mora. Este quadro
 **não** sustenta decisão de investimento sobre o produto; sustenta apenas a

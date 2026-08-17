@@ -243,7 +243,7 @@ Filtro em 4 camadas sobre o bairro-alvo:
 1. **Tem site?** Sem site → fora da fase 1 (ciclo de venda longo demais). Com site → entra
 2. **Paga por presença digital?** Rodar "site:instagram.com [nome]" com post patrocinado, ou olhar se aparece em Google Ads. Paga → prioridade máxima
 3. **Categoria tem pergunta?** O consumidor pergunta antes de escolher? Clínica, pet shop, restaurante, academia, imobiliária, escola, oficina → sim. Loja de conveniência, banca → não
-4. **Lista de exclusão:** advogado/escritório (→ Nexum Visible) · qualquer vínculo CEF · concorrente direto de cliente já ativo
+4. **Lista de exclusão:** advogado/escritório (→ Nexum Visible) · concorrente direto de cliente já ativo
 
 Meta: **40 alvos qualificados** por bairro.
 

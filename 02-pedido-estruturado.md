@@ -38,7 +38,6 @@ Um **site novo, enxuto e rápido**, construído desde a origem para ser a fonte 
 - ❌ Não é tráfego pago, redes sociais ou produção de conteúdo genérico
 - ❌ Não é ferramenta de monitoramento vendida como serviço
 - ❌ Não atende advogado (vai para o SKU Nexum Visible, que tem gate OAB)
-- ❌ Não atende ninguém ligado à CEF
 
 ### Cliente-alvo (perfil de aceite)
 Negócio local com **todas** estas características:
@@ -50,7 +49,6 @@ Negócio local com **todas** estas características:
 
 ### Cliente que NÃO entra
 - Advogado / escritório (SKU errado)
-- Qualquer vínculo com a CEF
 - Negócio que vive 100% de indicação e não quer cliente novo
 - Nicho onde ninguém pergunta a uma IA antes de comprar (compra por impulso, proximidade pura, preço)
 - Quem quer "só o site" e não aceita a medição
