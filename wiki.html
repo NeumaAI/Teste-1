@@ -1,0 +1,975 @@
+<title>Dossiê Primeira Resposta</title>
+<style>
+  :root {
+    --ground: #F3F5F7;
+    --surface: #FFFFFF;
+    --surface-2: #EAEDF1;
+    --ink: #12161D;
+    --ink-2: #4A525E;
+    --ink-3: #7A838F;
+    --rule: #DCE1E7;
+    --rule-strong: #C3CAD3;
+    --accent: #1B47C7;
+    --accent-soft: #E4EAFB;
+    --ok: #0B6B4F;
+    --ok-soft: #DCEFE7;
+    --warn: #8A5606;
+    --warn-soft: #F5E9D4;
+    --bad: #99342A;
+    --bad-soft: #F6E1DE;
+    --shadow: 0 1px 2px rgba(18,22,29,.05), 0 8px 24px -12px rgba(18,22,29,.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0D1016;
+      --surface: #151A22;
+      --surface-2: #1D232D;
+      --ink: #E7EAEF;
+      --ink-2: #A5ADBA;
+      --ink-3: #6D7683;
+      --rule: #262D38;
+      --rule-strong: #39424F;
+      --accent: #7A9EFF;
+      --accent-soft: #1A2440;
+      --ok: #45C296;
+      --ok-soft: #102A22;
+      --warn: #DBA646;
+      --warn-soft: #2C2313;
+      --bad: #E4796A;
+      --bad-soft: #331C19;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0D1016;
+    --surface: #151A22;
+    --surface-2: #1D232D;
+    --ink: #E7EAEF;
+    --ink-2: #A5ADBA;
+    --ink-3: #6D7683;
+    --rule: #262D38;
+    --rule-strong: #39424F;
+    --accent: #7A9EFF;
+    --accent-soft: #1A2440;
+    --ok: #45C296;
+    --ok-soft: #102A22;
+    --warn: #DBA646;
+    --warn-soft: #2C2313;
+    --bad: #E4796A;
+    --bad-soft: #331C19;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+    display: grid;
+    grid-template-columns: 218px minmax(0, 1fr);
+    gap: 56px;
+    align-items: start;
+  }
+
+  /* ---------- masthead ---------- */
+  .masthead {
+    grid-column: 1 / -1;
+    border-bottom: 2px solid var(--ink);
+    padding: 56px 0 22px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .masthead h1 {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-size: clamp(2.2rem, 5vw, 3.3rem);
+    font-weight: 400;
+    letter-spacing: -.02em;
+    line-height: 1.05;
+    margin: 0 0 10px;
+    text-wrap: balance;
+  }
+  .masthead p {
+    margin: 0;
+    color: var(--ink-2);
+    max-width: 52ch;
+    font-size: .98rem;
+  }
+  .meta {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .72rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: right;
+  }
+  .meta b { color: var(--ink); font-weight: 600; }
+
+  /* ---------- nav rail ---------- */
+  nav {
+    position: sticky;
+    top: 28px;
+    font-size: .845rem;
+    border-left: 1px solid var(--rule);
+    padding-left: 0;
+  }
+  nav .nav-label {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .66rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding: 0 0 10px 16px;
+  }
+  nav a {
+    display: block;
+    padding: 6px 0 6px 16px;
+    color: var(--ink-2);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    margin-left: -1px;
+    transition: color .15s, border-color .15s;
+  }
+  nav a:hover { color: var(--ink); }
+  nav a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    font-weight: 600;
+  }
+  nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  nav .num {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .72rem;
+    color: var(--ink-3);
+    margin-right: 8px;
+  }
+
+  /* ---------- content ---------- */
+  main { min-width: 0; }
+  section { scroll-margin-top: 24px; margin-bottom: 68px; }
+
+  h2 {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-size: 1.75rem;
+    font-weight: 400;
+    letter-spacing: -.015em;
+    margin: 0 0 6px;
+    text-wrap: balance;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  h2 .num {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .78rem;
+    color: var(--accent);
+    letter-spacing: .08em;
+    flex: none;
+  }
+  .sub {
+    color: var(--ink-3);
+    font-size: .92rem;
+    margin: 0 0 26px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+  h3 {
+    font-size: 1.02rem;
+    font-weight: 650;
+    margin: 34px 0 10px;
+    letter-spacing: -.005em;
+  }
+  h4 {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .7rem;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600;
+    margin: 28px 0 10px;
+  }
+  p { margin: 0 0 14px; max-width: 68ch; }
+  ul, ol { margin: 0 0 16px; padding-left: 20px; max-width: 68ch; }
+  li { margin-bottom: 6px; }
+  a { color: var(--accent); text-underline-offset: 2px; }
+  strong { font-weight: 650; }
+
+  /* ---------- confidence tags ---------- */
+  .tag {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .625rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    white-space: nowrap;
+    vertical-align: 1px;
+  }
+  .t-v { background: var(--ok-soft); color: var(--ok); }
+  .t-i { background: var(--warn-soft); color: var(--warn); }
+  .t-e { background: var(--bad-soft); color: var(--bad); }
+  .t-q { background: var(--surface-2); color: var(--ink-2); }
+
+  /* ---------- verdict banner ---------- */
+  .verdict {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 24px 26px;
+    box-shadow: var(--shadow);
+    margin-bottom: 28px;
+  }
+  .verdict p:last-child { margin-bottom: 0; }
+  .verdict .lede {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 1.14rem;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+
+  /* ---------- stat grid ---------- */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0 0 26px;
+  }
+  .stat { background: var(--surface); padding: 18px 18px 16px; }
+  .stat .n {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 1.9rem;
+    line-height: 1;
+    letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums;
+    display: block;
+    margin-bottom: 7px;
+  }
+  .stat .n.up { color: var(--ok); }
+  .stat .n.down { color: var(--bad); }
+  .stat .k {
+    font-size: .8rem;
+    color: var(--ink-2);
+    line-height: 1.4;
+    display: block;
+  }
+  .stat .src {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .625rem;
+    color: var(--ink-3);
+    letter-spacing: .04em;
+    display: block;
+    margin-top: 8px;
+  }
+
+  /* ---------- tables ---------- */
+  .scroll { overflow-x: auto; margin: 0 0 24px; border: 1px solid var(--rule); border-radius: 4px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: .875rem; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  thead th {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .66rem;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600;
+    background: var(--surface-2);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td.num, th.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .strike { text-decoration: line-through; color: var(--ink-3); }
+
+  /* ---------- correction cards ---------- */
+  .fix {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+  }
+  .fix.err { border-left: 3px solid var(--bad); }
+  .fix.ok { border-left: 3px solid var(--ok); }
+  .fix.new { border-left: 3px solid var(--accent); }
+  .fix h3 { margin: 0 0 8px; font-size: .97rem; }
+  .fix p { margin-bottom: 9px; font-size: .9rem; }
+  .fix p:last-child { margin-bottom: 0; }
+  .fix .quote {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-style: italic;
+    color: var(--ink-2);
+    border-left: 2px solid var(--rule-strong);
+    padding-left: 12px;
+    margin: 0 0 10px;
+    font-size: .89rem;
+  }
+
+  /* ---------- callout ---------- */
+  .note {
+    background: var(--accent-soft);
+    border-radius: 4px;
+    padding: 15px 18px;
+    font-size: .89rem;
+    margin: 0 0 22px;
+    max-width: 68ch;
+  }
+  .note p { margin: 0; max-width: none; }
+  .note .lbl {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .64rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  /* ---------- steps ---------- */
+  .step {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 18px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .step:last-of-type { border-bottom: none; }
+  .step .idx {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 1.15rem;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.3;
+  }
+  .step h3 { margin: 0 0 4px; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .step .cost {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .68rem;
+    color: var(--ink-3);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+  }
+  .step p { font-size: .91rem; margin-bottom: 8px; }
+  .step p:last-child { margin-bottom: 0; }
+  .blocker {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .6rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    font-weight: 700;
+    background: var(--bad-soft);
+    color: var(--bad);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  pre {
+    background: var(--surface-2);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .78rem;
+    line-height: 1.6;
+    margin: 0 0 22px;
+  }
+
+  .srclist { font-size: .82rem; columns: 2; column-gap: 40px; }
+  .srclist li { break-inside: avoid; margin-bottom: 9px; }
+
+  hr { border: none; border-top: 1px solid var(--rule); margin: 34px 0; }
+
+  @media (max-width: 900px) {
+    .wrap { grid-template-columns: minmax(0, 1fr); gap: 0; }
+    nav { position: static; border-left: none; border-bottom: 1px solid var(--rule); padding-bottom: 18px; margin-bottom: 34px; display: flex; flex-wrap: wrap; gap: 4px 18px; }
+    nav .nav-label { width: 100%; padding-left: 0; }
+    nav a { border-left: none; padding: 3px 0; }
+    nav a.active { border-left: none; }
+    .srclist { columns: 1; }
+    .masthead { padding-top: 34px; }
+    .meta { text-align: left; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div>
+      <h1>Dossiê Primeira Resposta</h1>
+      <p>Produto de sites otimizados para motores de busca generativos, para negócios locais. Pré-projeto consolidado, com auditoria de dados contra o mercado real.</p>
+    </div>
+    <div class="meta">
+      <span>Compilado <b>17 ago 2026</b></span>
+      <span>Status <b>Pré-projeto</b></span>
+      <span>Veredito <b>GO condicional</b></span>
+    </div>
+  </header>
+
+  <nav>
+    <div class="nav-label">Seções</div>
+    <a href="#veredito"><span class="num">00</span>Veredito</a>
+    <a href="#situacao"><span class="num">01</span>Situação</a>
+    <a href="#auditoria"><span class="num">02</span>Auditoria de dados</a>
+    <a href="#mercado"><span class="num">03</span>Mercado real</a>
+    <a href="#produto"><span class="num">04</span>O produto</a>
+    <a href="#venda"><span class="num">05</span>Argumentos</a>
+    <a href="#operacao"><span class="num">06</span>Operação</a>
+    <a href="#riscos"><span class="num">07</span>Riscos</a>
+    <a href="#etapas"><span class="num">08</span>Próximas etapas</a>
+    <a href="#fontes"><span class="num">09</span>Fontes</a>
+  </nav>
+
+  <main>
+
+    <!-- ================= 00 ================= -->
+    <section id="veredito">
+      <h2><span class="num">00</span>Veredito</h2>
+      <p class="sub">O que a consolidação e a auditoria produziram, em quatro frases.</p>
+
+      <div class="verdict">
+        <p class="lede">O produto tem fundamento de mercado real e um argumento de venda melhor do que qualquer um dos três que você já tinha escrito. Mas ele depende de uma verificação de trinta minutos que nunca foi feita, e quatro dos dados que sustentavam o plano estavam errados.</p>
+        <p>O achado que mais importa não estava em nenhum documento seu: <strong>83% dos restaurantes são invisíveis no ChatGPT, contra 14% no Google</strong> — estudo de 189.905 resultados, corroborado por quatro fontes independentes. Isso valida a tese do produto para negócio local com força que nenhum dos seus documentos tinha.</p>
+        <p>O achado que mais dói: o gap que seu plano de maio identificou — <em>"nenhuma agência 100% especializada em GEO no Brasil"</em> — <strong>foi ocupado em três meses</strong> pela GeoStack, com preço público de R$ 3.490/mês. Exatamente a meia-vida de 12–24 meses que seu próprio critério C4 previu, só que mais rápido.</p>
+        <p>E o dado que muda a operação: a Promptado <strong>não custa R$ 199/mês</strong> como está no seu Notion. Custa R$ 99, R$ 399 ou R$ 799 conforme o plano — o que quebrava a margem do retainer que eu tinha proposto.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span class="n down">83%</span><span class="k">dos restaurantes invisíveis no ChatGPT (14% no Google)</span><span class="src">Local Falcon · 189.905 resultados</span></div>
+        <div class="stat"><span class="n up">45%</span><span class="k">dos consumidores usam IA para achar negócio local — era 6% há um ano</span><span class="src">verificado 2026</span></div>
+        <div class="stat"><span class="n down">58%</span><span class="k">de queda de CTR no 1º colocado quando há resumo de IA</span><span class="src">Ahrefs · dez 2025</span></div>
+        <div class="stat"><span class="n">68%</span><span class="k">das buscas no Google terminam sem clique (EUA, 2026)</span><span class="src">SparkToro · Similarweb</span></div>
+      </div>
+
+      <div class="note">
+        <span class="lbl">Condição do GO</span>
+        <p>Rodar o teste dos 30 minutos (etapa 1) e cinco conversas na rua (etapa 2). Três horas de trabalho ao todo. Se as IAs devolverem só agregadores em vez de nomes de negócios de Fortaleza, o produto precisa ser redesenhado antes de gastar um dia.</p>
+      </div>
+    </section>
+
+    <!-- ================= 01 ================= -->
+    <section id="situacao">
+      <h2><span class="num">01</span>Situação</h2>
+      <p class="sub">O que já existe no acervo — e por que isso é o problema, não a solução.</p>
+
+      <p>A varredura do Notion, do Google Drive e das skills encontrou <strong>três versões do mesmo produto</strong>, escritas entre abril e maio de 2026. Nenhuma registra uma única unidade vendida.</p>
+
+      <div class="scroll">
+        <table>
+          <thead>
+            <tr><th>Documento</th><th>Data</th><th>Público</th><th>Preço</th><th>Estado</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>Nexum Visible</strong><br><span style="color:var(--ink-3);font-size:.82rem">Notion</span></td><td class="num">18 mai</td><td>Advogado, escritório, B2B</td><td class="num">R$ 8k setup<br>+ R$ 3k/mês</td><td>Framework completo, nunca operado</td></tr>
+            <tr><td><strong>GEO Nexum Brand Intelligence</strong><br><span style="color:var(--ink-3);font-size:.82rem">Notion</span></td><td class="num">16 abr</td><td>PME</td><td class="num">R$ 300 → 4,5k<br>→ 1,5k/mês</td><td>SOP de 65 min e 3 prompts prontos. Marcado <em>"GO confirmado, aguardando slot WIP"</em></td></tr>
+            <tr><td><strong>Plano Agência GEO + NUCLEO™</strong><br><span style="color:var(--ink-3);font-size:.82rem">Drive, 25 KB</span></td><td class="num">mai</td><td>PME e liberal</td><td class="num">R$ 4,5k → 18k/mês</td><td>8 concorrentes mapeados. Método de 6 etapas</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>O padrão que a própria matriz já tinha detectado</h3>
+      <p>Em 16 de julho, a <code>matriz-renda-extra.pdf</code> registrou, sobre a mesma ideia:</p>
+      <div class="fix err">
+        <p class="quote">"4 dos seus 11 itens são o mesmo conceito de coisas que você já validou e pontuou como GO, só reformuladas. Isso muda a pergunta real. Não é 'qual side job escolher entre 11 opções novas'. É: por que estou regerando ideias que já pontuei como GO em vez de ativar uma delas?"</p>
+        <p>Um mês depois, esta é a quarta versão. <strong>O gargalo nunca foi produto — é ativação.</strong> Por isso este dossiê termina em três horas de verificação de campo, não em mais escopo.</p>
+      </div>
+
+      <h3>Os dois ativos técnicos, verificados</h3>
+      <div class="fix ok">
+        <h3>A skill de GEO existe <span class="tag t-v">Verificado</span></h3>
+        <p><code>geo-otimizacao-conteudo/SKILL.md</code>, 327 linhas. Pipeline de 5 camadas: auditoria SEO base, otimização GEO, filtragem e reenriquecimento, scoring ponderado e entrega. Existe também <code>geo-juridico</code>, com gate de compliance OAB.</p>
+      </div>
+      <div class="fix err">
+        <h3>O motor em Python não existe neste ambiente <span class="tag t-v">Verificado</span></h3>
+        <p>A pasta da skill contém <strong>apenas</strong> o <code>SKILL.md</code> — sem <code>scripts/</code>, sem nenhum <code>.py</code>. O frontmatter <em>declara</em> dependência de Python 3.8+, mas o código não está aqui. O repositório do projeto estava vazio. Os únicos arquivos Python do ambiente pertencem a skills da Anthropic.</p>
+        <p>Isso não bloqueia as três primeiras vendas — a skill sozinha entrega. Bloqueia a escala: com automação, o diagnóstico vai de 20 minutos para cerca de 2 por alvo.</p>
+      </div>
+    </section>
+
+    <!-- ================= 02 ================= -->
+    <section id="auditoria">
+      <h2><span class="num">02</span>Auditoria de dados</h2>
+      <p class="sub">Seus documentos foram gerados por LLM e nunca verificados. Uma alucinação num deles se propaga por todos os seguintes — e por mim. Verificação feita contra fonte primária em 17/08/2026.</p>
+
+      <h4>Falsos ou desatualizados</h4>
+
+      <div class="fix err">
+        <h3>Preço da Promptado <span class="tag t-e">Falso</span></h3>
+        <p class="quote">Nexum Visible §13: "Promptado (R$ 199/mês, brasileira, PT-BR) — adotar desde o cliente 1."</p>
+        <p><strong>Real:</strong> Starter R$ 99 · Essential R$ 399 · Growth R$ 799 · Enterprise e Agência sob consulta. Monitora ChatGPT, Gemini, Copilot, Grok e Google AI Mode.</p>
+        <p><strong>Impacto:</strong> um retainer de R$ 690/mês com ferramenta de R$ 399 deixa R$ 291 antes de qualquer hora trabalhada. Correção: <strong>não comprar ferramenta nenhuma até o cliente 4</strong> — o monitoramento é o mesmo teste do laudo e roda com a skill em cerca de 1h/mês.</p>
+      </div>
+
+      <div class="fix err">
+        <h3>"Nenhuma agência 100% especializada em GEO no Brasil" <span class="tag t-e">Desatualizado</span></h3>
+        <p class="quote">plano_agencia_geo, maio: "não há agência ESPECIALIZADA-PURA em GEO+Agentic. Gap de posicionamento."</p>
+        <p><strong>Real:</strong> a GeoStack se posiciona publicamente como <em>"a primeira agência do Brasil 100% dedicada a Generative Engine Optimization"</em>, com tabela pública — Starter R$ 3.490/mês para pequenos negócios e profissionais liberais, Growth R$ 6.990/mês para PME. Mantém inclusive um "Mapa das Agências de GEO" como ativo de conteúdo.</p>
+        <p><strong>Impacto:</strong> o gap foi ocupado em três meses. Não mata o produto — muda o argumento, e para melhor (ver seção 04).</p>
+      </div>
+
+      <div class="fix err">
+        <h3>"Preços opacos, nenhuma agência mostra preço" <span class="tag t-e">Falso hoje</span></h3>
+        <p>GeoStack publica tabela. Artigos brasileiros de 2026 trazem faixas abertas: consultoria GEO de R$ 5.000 (sprint) a R$ 80.000/mês (retainer enterprise). O diferencial "preço público" deixou de existir.</p>
+      </div>
+
+      <div class="fix err">
+        <h3>Zero-click "60% desktop, 77% mobile" <span class="tag t-e">Rótulos trocados</span></h3>
+        <p><strong>Real</strong> (SparkToro/Similarweb, 4 primeiros meses de 2026, EUA): <strong>68,01% geral</strong> — o "60%" do seu documento era o número <em>geral de 2024</em>, não desktop. Desktop fica em ~50%, mobile em ~77%. Resumos de IA aparecem em mais de 20% das buscas.</p>
+        <p><strong>Atenção:</strong> dado dos Estados Unidos. Não encontrei equivalente brasileiro <span class="tag t-q">a verificar</span>. Usar como tendência, nunca como "no Brasil é assim".</p>
+      </div>
+
+      <h4>Confirmados, com a precisão corrigida</h4>
+
+      <div class="fix ok">
+        <h3>Queda de CTR por resumos de IA <span class="tag t-v">Verificado</span></h3>
+        <p>Ahrefs, dois estudos: <strong>−34,5%</strong> em abril/2025 (300 mil palavras-chave) e <strong>−58%</strong> com dado de dezembro/2025. Citar sempre com a data — imprecisão aqui derruba a credibilidade se o cliente for conferir.</p>
+      </div>
+
+      <div class="fix ok">
+        <h3>Paper de Princeton <span class="tag t-v">Verificado, mas mais fraco</span></h3>
+        <p>Aggarwal et al., <em>GEO: Generative Engine Optimization</em>, ACM SIGKDD 2024, arXiv 2311.09735. 17 páginas, 9 táticas testadas em 10.000 queries.</p>
+        <p><strong>Correção:</strong> os três métodos mais fortes atingiram <strong>30–40% de melhora relativa</strong> na métrica <em>Position-Adjusted Word Count</em> — e <strong>40% é o máximo, não a média</strong>. O driver principal de citação é <em>Information Gain</em>: trazer informação que as outras fontes não têm. Apresentar o "+41%" como ganho garantido é exagero.</p>
+      </div>
+
+      <div class="fix ok">
+        <h3>Faixa de preço de site no Brasil <span class="tag t-v">Verificado</span></h3>
+        <p>2026: institucional simples R$ 1.000–5.000 · até 5 páginas R$ 2.500–4.500 · profissional geral R$ 3.000–12.000 · landing page R$ 1.500–4.000. Hospedagem R$ 100–1.500/mês.</p>
+      </div>
+
+      <div class="fix ok">
+        <h3>Nordeste sem agência GEO identificada <span class="tag t-i">Inferência</span></h3>
+        <p>Busca dirigida a Fortaleza, Ceará e Nordeste não retornou nenhuma agência GEO local. Ausência de evidência, não evidência de ausência — mas consistente com o mapeamento de maio.</p>
+      </div>
+
+      <div class="fix ok">
+        <h3>"1,2% das empresas brasileiras têm GEO" <span class="tag t-i">Não usar</span></h3>
+        <p>Alegação de que só 1,2% das empresas brasileiras têm otimização para IA, contra 23% nos EUA. <strong>É dado de marketing de agência, não estudo independente</strong> — a fonte tem interesse comercial em inflar a lacuna. Não usar em proposta sem uma segunda fonte.</p>
+      </div>
+
+      <h4>Achados novos que mudam o produto</h4>
+
+      <div class="fix new">
+        <h3>A invisibilidade de negócios locais em IA <span class="tag t-v">Verificado, 4 fontes</span></h3>
+        <p>Estudo de <strong>189.905 resultados de busca do ChatGPT</strong> para queries de restaurantes — um dos maiores já feitos. Corroborado por Local Falcon, TechNewsWorld, MapAtlas e um relatório separado da Uberall.</p>
+        <div class="scroll" style="margin:14px 0 10px">
+          <table>
+            <thead><tr><th>Dado</th><th class="num">Número</th><th>Por que importa</th></tr></thead>
+            <tbody>
+              <tr><td>Invisibilidade</td><td class="num"><strong>83%</strong> no ChatGPT<br>vs 14% no Google</td><td>O problema é 6× maior em IA do que em busca tradicional</td></tr>
+              <tr><td>Concentração</td><td class="num"><strong>74,5%</strong> da visibilidade fica com os 10% do topo</td><td>Contra 54% no Google Maps. IA é mais "vencedor leva tudo" que o Maps</td></tr>
+              <tr><td>Avaliações não salvam</td><td class="num"><strong>70,9%</strong></td><td>Negócios com +1.000 avaliações no Google ficaram de fora esse tanto das vezes. Mata a objeção "mas eu tenho 5 estrelas"</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>E o contexto que fecha: a OpenAI lançou publicidade no ChatGPT em fevereiro/2026 com <strong>compra mínima de US$ 200 mil</strong>. A porta paga está fechada para negócio local — orgânico é o único caminho, por enquanto.</p>
+        <p><strong>Ressalva obrigatória:</strong> estudo americano, de restaurantes. Não prova que o mesmo ocorre em Fortaleza. É exatamente por isso que a etapa 1 existe.</p>
+      </div>
+
+      <div class="fix new">
+        <h3>A adoção saltou 7,5× em doze meses <span class="tag t-v">Verificado</span></h3>
+        <p><strong>45% dos consumidores</strong> já usam ferramentas de IA para recomendação de negócio local — era 6% um ano antes. É a resposta para a objeção mais provável de um dono de padaria: <em>"isso é coisa de nerd, meu cliente não usa ChatGPT"</em>.</p>
+      </div>
+
+      <div class="fix new">
+        <h3>O ChatGPT não sabe onde você está <span class="tag t-v">Verificado</span></h3>
+        <p>Diferente do Google e do Apple Maps, ele <strong>não interpreta "perto de mim"</strong> sem contexto. Responde a partir de páginas, avaliações, diretórios e dados estruturados que consegue ler e confiar — e a consistência de nome, endereço, telefone e horário entre o site, o Google Business Profile e os diretórios é fator determinante.</p>
+        <p>Três consequências diretas: <strong>(1)</strong> a identidade canônica deixa de ser higiene e vira mecanismo central do produto; <strong>(2)</strong> as perguntas do laudo têm que nomear o bairro explicitamente — "perto de mim" não testa nada; <strong>(3)</strong> entra no escopo uma orientação de avaliações, já que 20+ avaliações novas em 3 meses correlacionam com 2,5× mais chance de aparecer.</p>
+      </div>
+    </section>
+
+    <!-- ================= 03 ================= -->
+    <section id="mercado">
+      <h2><span class="num">03</span>Mercado real</h2>
+      <p class="sub">Concorrência e preço verificados, não inferidos.</p>
+
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Âncora</th><th class="num">Preço</th><th>Site incluso</th><th>Observação</th></tr></thead>
+          <tbody>
+            <tr><td><strong>GeoStack</strong> — GEO Starter</td><td class="num">R$ 3.490/mês</td><td>não</td><td>Pequenos negócios, profissionais liberais, marcas pessoais</td></tr>
+            <tr><td><strong>GeoStack</strong> — GEO Growth</td><td class="num">R$ 6.990/mês</td><td>não</td><td>PME, e-commerce, startup</td></tr>
+            <tr><td>Consultoria GEO BR — sprint</td><td class="num">a partir de R$ 5.000</td><td>não</td><td>Vendida por escopo, não por hora</td></tr>
+            <tr><td>Consultoria GEO BR — retainer enterprise</td><td class="num">até R$ 80.000/mês</td><td>não</td><td>Topo de mercado</td></tr>
+            <tr><td>Site institucional até 5 páginas</td><td class="num">R$ 2.500 – 4.500</td><td>—</td><td>Mercado brasileiro, 2026</td></tr>
+            <tr><td>Site profissional geral</td><td class="num">R$ 3.000 – 12.000</td><td>—</td><td>Mercado brasileiro, 2026</td></tr>
+            <tr><td>Promptado (ferramenta)</td><td class="num">R$ 99 / 399 / 799 por mês</td><td>—</td><td>Não é R$ 199 como consta no seu Notion</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <span class="lbl">O que isso destrava</span>
+        <p>A comparação certa não é com freelancer de site — é com a GeoStack. E ela é favorável por uma margem que o cliente consegue conferir sozinho.</p>
+      </div>
+    </section>
+
+    <!-- ================= 04 ================= -->
+    <section id="produto">
+      <h2><span class="num">04</span>O produto</h2>
+      <p class="sub">Escopo fechado, prazo fechado, preço ancorado em mercado verificado.</p>
+
+      <p style="font-family:Georgia,serif;font-size:1.1rem;font-style:italic;color:var(--ink-2);max-width:60ch">Quando alguém pergunta ao ChatGPT qual é o melhor serviço aqui na região, alguém é respondido. Nós fazemos com que seja você — e mostramos o antes e o depois.</p>
+
+      <p>Não se vende um site. Vende-se <strong>um site e um laudo</strong>. O laudo é o produto; o site é o veículo. É essa distinção que impede o cliente de comparar o preço com o do freelancer.</p>
+
+      <h3>Os cinco blocos</h3>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Bloco</th><th>Dias</th><th>O que entrega</th></tr></thead>
+          <tbody>
+            <tr><td><strong>A — Laudo de entrada</strong></td><td class="num">1–2</td><td>20 perguntas-âncora rodadas em ChatGPT, Gemini, Perplexity e Claude. 80 respostas com print e data. Placar: em quantas ele aparece, quem aparece no lugar dele</td></tr>
+            <tr><td><strong>B — O site</strong></td><td class="num">3–7</td><td>5 a 7 páginas sobre template próprio. Página-fonte por serviço, perguntas frequentes reais, identidade canônica. Camada técnica: JSON-LD (LocalBusiness, Service, FAQPage, Person, OpeningHours), llms.txt, robots.txt liberando crawlers de IA, HTML semântico, LCP &lt; 2,5s</td></tr>
+            <tr><td><strong>C — Identidade consistente</strong></td><td class="num">7–8</td><td>Versão canônica única replicada e verificada em Google Business Profile, Apple Maps, Bing Places, redes e diretórios do setor. <strong>Subiu para o centro do produto</strong> depois do achado sobre localização</td></tr>
+            <tr><td><strong>D — Kit de marketing</strong></td><td class="num">9</td><td>Calendário de 12 conteúdos amarrados às perguntas ainda não respondidas · modelo de página-fonte · regra dos 3 sinais · orientação de avaliações · lista do que parar de fazer</td></tr>
+            <tr><td><strong>E — Laudo de saída</strong></td><td class="num">60</td><td>As mesmas 20 perguntas, nas mesmas 4 IAs, mesma metodologia. Placar lado a lado, com veredito honesto — inclusive quando não mexeu</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p><strong>Fora do escopo:</strong> redes sociais, anúncios pagos, e-commerce, agendamento, blog recorrente, identidade visual, fotografia, e-mail marketing, manutenção evolutiva.</p>
+
+      <h3>Preço, corrigido pela auditoria</h3>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Item</th><th class="num">Antes</th><th class="num">Agora</th><th>Motivo</th></tr></thead>
+          <tbody>
+            <tr><td>Raio-X (isca)</td><td class="num">R$ 0</td><td class="num">R$ 0</td><td>5 perguntas, 20 min, é o que fabrica a consciência do problema</td></tr>
+            <tr><td>Projeto</td><td class="num">R$ 4.900</td><td class="num"><strong>R$ 4.900</strong></td><td>Confirmado pela âncora GeoStack</td></tr>
+            <tr><td>Recorrente</td><td class="num"><span class="strike">R$ 690/mês</span></td><td class="num"><strong>R$ 890/mês</strong></td><td>R$ 690 não cobria nem a ferramenta</td></tr>
+            <tr><td>Laudo avulso</td><td class="num"><span class="strike">R$ 690</span></td><td class="num"><strong>R$ 890</strong></td><td>Evita canibalizar o recorrente</td></tr>
+            <tr><td>Ferramenta</td><td class="num"><span class="strike">R$ 199/mês desde o cliente 1</span></td><td class="num"><strong>R$ 0 até o cliente 4</strong></td><td>Monitoramento manual com a skill, ~1h/mês</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Por que R$ 4.900 se sustenta</h3>
+      <div class="scroll">
+        <table>
+          <thead><tr><th></th><th class="num">GeoStack Starter</th><th class="num">Primeira Resposta</th></tr></thead>
+          <tbody>
+            <tr><td>Site incluso</td><td class="num">não</td><td class="num">sim</td></tr>
+            <tr><td>Modelo</td><td class="num">R$ 3.490 por mês</td><td class="num">R$ 4.900 uma vez</td></tr>
+            <tr><td><strong>Custo no ano 1</strong></td><td class="num"><strong>R$ 41.880</strong></td><td class="num"><strong>R$ 15.580</strong></td></tr>
+            <tr><td>Medição antes/depois</td><td class="num">não publicada</td><td class="num">contratual</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>2,7× mais barato no primeiro ano, com o site incluído</strong> — e verificável pelo cliente na tabela pública deles, o que torna o argumento quase impossível de contestar.</p>
+
+      <h3>O sarrafo alto</h3>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Padrão</th><th>O mercado hoje</th><th>Primeira Resposta</th></tr></thead>
+          <tbody>
+            <tr><td>Medição</td><td>"Melhorou a presença digital"</td><td>20 perguntas × 4 IAs, antes e depois, com print e data</td></tr>
+            <tr><td>Honestidade prévia</td><td>Aceita todo cliente que paga</td><td>Recusa quem não tem chance, no diagnóstico, de graça</td></tr>
+            <tr><td>Escopo</td><td>Orçamento sob consulta, escopo elástico</td><td>Preço público, escopo fechado, 10 dias úteis</td></tr>
+            <tr><td>Promessa</td><td>"Primeiro lugar no ChatGPT"</td><td>Nenhuma promessa de posição. Promessa de construção e medição</td></tr>
+            <tr><td>Handoff</td><td>Cliente fica refém da agência</td><td>Kit que ele opera sozinho. Recorrência é opcional</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>O item mais forte é a <strong>honestidade prévia</strong> — vem do vetor de ataque da sua Terceira Camada: <em>"a razão de escolha vira 'ele me disse a verdade antes de cobrar'"</em>. Num mercado envenenado por agência que promete e não entrega, o único posicionamento sem concorrência é o do sujeito que diz "não vale a pena pra você" e vai embora.</p>
+    </section>
+
+    <!-- ================= 05 ================= -->
+    <section id="venda">
+      <h2><span class="num">05</span>Argumentos</h2>
+      <p class="sub">Reescritos sobre os dados verificados. O argumento principal mudou.</p>
+
+      <h3>A ordem em que o cliente sente a dor</h3>
+      <p>Não inverter. O dono do pet shop não tem a dor de aparecer no ChatGPT — ele tem a dor de telefone tocando menos.</p>
+<pre>1. SINTOMA        "Tá entrando menos gente nova do que ano passado."
+                        ↓
+2. CAUSA VISÍVEL  "O pessoal não pesquisa mais no Google como antes."
+                        ↓
+3. CAUSA REAL     "Eles perguntam pro ChatGPT. E o ChatGPT responde
+                   com o nome do seu concorrente."   ← aqui entra o print
+                        ↓
+4. MECANISMO      "Seu site foi feito pra aparecer numa lista de links.
+                   A IA não lê lista — ela lê conteúdo que responde."
+                        ↓
+5. SOLUÇÃO        Primeira Resposta.</pre>
+      <p>O passo 3 é onde a venda acontece, e ele <strong>não é falado — é mostrado</strong>.</p>
+
+      <h3>O pitch de 40 segundos</h3>
+      <div class="verdict">
+        <p style="font-family:Georgia,serif;font-size:1.02rem;margin:0">"Posso te mostrar uma coisa de trinta segundos? Eu perguntei pro ChatGPT qual a melhor [categoria] aqui [no bairro]. Ó a resposta. [mostra a tela] Aparece [concorrente], aparece [concorrente], e o seu nome não tá aqui. Isso não é o Google — é a IA, e é pra onde tá indo a pesquisa de quem ainda não te conhece. Eu faço exatamente isso: fazer você ser o nome que aparece aí. Quer que eu te mande o raio-x completo do seu caso? É de graça, sai amanhã, e se eu ver que não vale a pena pra você eu te falo."</p>
+      </div>
+      <p>Abre com prova, não com pergunta. Não pede nada. Termina oferecendo a possibilidade de o próprio vendedor dizer não — que é o gancho de confiança.</p>
+
+      <h3>As provas, com fonte e data</h3>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>#</th><th>Argumento</th><th>Dado</th><th>Confiança</th></tr></thead>
+          <tbody>
+            <tr><td class="num">1</td><td><strong>Seu negócio provavelmente não existe pra IA</strong></td><td>83% dos restaurantes invisíveis no ChatGPT, contra 14% no Google. Estudo de 189.905 resultados</td><td><span class="tag t-v">Verificado</span><br><span style="font-size:.75rem;color:var(--ink-3)">EUA, restaurantes</span></td></tr>
+            <tr><td class="num">2</td><td>Não é coisa de nerd</td><td>45% dos consumidores usam IA para achar negócio local — era 6% um ano antes</td><td><span class="tag t-v">Verificado</span></td></tr>
+            <tr><td class="num">3</td><td>Avaliação boa não te salva</td><td>Negócios com +1.000 avaliações no Google ficaram de fora 70,9% das vezes</td><td><span class="tag t-v">Verificado</span></td></tr>
+            <tr><td class="num">4</td><td>Em IA, ou você está no topo ou não existe</td><td>Os 10% do topo capturam 74,5% da visibilidade, contra 54% no Maps</td><td><span class="tag t-v">Verificado</span></td></tr>
+            <tr><td class="num">5</td><td>Quem rankeava está perdendo</td><td>Queda de 58% no CTR do 1º colocado quando há resumo de IA — Ahrefs, dez/2025</td><td><span class="tag t-v">Verificado</span></td></tr>
+            <tr><td class="num">6</td><td>A porta paga está fechada pra você</td><td>Publicidade no ChatGPT desde fev/2026, com compra mínima de US$ 200 mil</td><td><span class="tag t-v">Verificado</span></td></tr>
+            <tr><td class="num">7</td><td>Isso tem método, não é sorte</td><td>Paper de Princeton, SIGKDD 2024: até 40% de ganho em citação com técnicas específicas. O fator mais forte é dizer algo que ninguém mais diz</td><td><span class="tag t-v">Verificado</span><br><span style="font-size:.75rem;color:var(--ink-3)">40% é máximo, não média</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Regra: um argumento por conversa.</strong> Sete provas em sequência é discurso de vendedor, e mata a credibilidade que o print acabou de construir.</p>
+
+      <h3>Objeções</h3>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Objeção</th><th>Resposta</th></tr></thead>
+          <tbody>
+            <tr><td>"Já tenho site."</td><td>"Ótimo — não vou refazer por refazer. Deixa eu rodar o raio-x. Se seu site já está sendo citado, eu te falo e não te vendo nada."</td></tr>
+            <tr><td>"Tenho 800 avaliações cinco estrelas."</td><td>"E isso é ótimo pro Google. Só que tem um estudo grande mostrando que negócios com mais de mil avaliações ficam de fora das respostas de IA em 70% das vezes. São jogos diferentes."</td></tr>
+            <tr><td>"Isso é coisa de nerd, meu cliente não usa ChatGPT."</td><td>"Ano passado era 6% das pessoas. Hoje é 45% pra achar negócio local. Não é se vai chegar no seu cliente — é quando."</td></tr>
+            <tr><td>"Isso funciona mesmo?"</td><td>"Em parte. Eu construo o que aumenta a chance de ser citado, e meço. O que eu não faço é prometer posição — quem promete tá mentindo, porque o ChatGPT é de terceiro e muda sem avisar. Por isso a medição."</td></tr>
+            <tr><td>"R$ 4.900 tá caro."</td><td>"A agência especializada nisso cobra R$ 3.490 por mês, e sem o site. No ano dá quarenta e um mil. Aqui é quinze mil e meio no ano um, com o site. A tabela deles é pública, pode conferir."</td></tr>
+            <tr><td>"Meu sobrinho faz site."</td><td>"Faz mesmo, e provavelmente bem. Pergunta pra ele se ele mexe com schema JSON-LD e llms.txt. Se ele mexer, contrata ele — sério. Se ele não souber o que é, o site vai ficar bonito e invisível pra IA."</td></tr>
+            <tr><td>"E se não funcionar?"</td><td>"Aí o laudo de 60 dias vai mostrar que não funcionou, e eu vou ter te dito isso por escrito. É o único jeito honesto de vender isso."</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="note">
+        <span class="lbl">Nunca dizer</span>
+        <p>"Primeiro lugar no ChatGPT" · "garanto que você vai aparecer" · "vamos dobrar seu faturamento" · as palavras GEO, AIO, AEO, schema ou LLM no primeiro contato · qualquer número de resultado que não venha de medição do próprio cliente · o dado dos 83% sem dizer que é estudo americano de restaurantes.</p>
+      </div>
+    </section>
+
+    <!-- ================= 06 ================= -->
+    <section id="operacao">
+      <h2><span class="num">06</span>Operação</h2>
+      <p class="sub">O que a pessoa executora faz sozinha, e onde você entra. Cap: 2h suas por unidade.</p>
+
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Etapa</th><th>Quem</th><th class="num">Tempo</th><th>Delegável hoje</th></tr></thead>
+          <tbody>
+            <tr><td>Montar lista de 40 alvos do bairro</td><td>Pessoa</td><td class="num">2h (uma vez)</td><td>sim</td></tr>
+            <tr><td>Rodar o raio-x (5 perguntas × 4 IAs)</td><td>Pessoa</td><td class="num">20 min/alvo</td><td>sim</td></tr>
+            <tr><td>Abordagem e pitch</td><td>Pessoa</td><td class="num">15 min/alvo</td><td>sim</td></tr>
+            <tr><td><strong>Gate de aceite — este cliente tem chance?</strong></td><td><strong>Rodrigo</strong></td><td class="num"><strong>10 min</strong></td><td>não</td></tr>
+            <tr><td>Laudo completo (20 perguntas × 4 IAs)</td><td>Pessoa</td><td class="num">2h</td><td>sim, com a skill</td></tr>
+            <tr><td>Coleta de conteúdo com o cliente</td><td>Pessoa</td><td class="num">1h30</td><td>sim</td></tr>
+            <tr><td>Redação das páginas-fonte</td><td>Pessoa</td><td class="num">4h</td><td>com o kit e revisão</td></tr>
+            <tr><td>Montagem no template</td><td>Pessoa</td><td class="num">3h</td><td>sim</td></tr>
+            <tr><td><strong>Camada técnica (schema, llms.txt, robots, performance)</strong></td><td><strong>Rodrigo</strong></td><td class="num"><strong>45 min</strong></td><td>não</td></tr>
+            <tr><td><strong>Revisão final antes de publicar</strong></td><td><strong>Rodrigo</strong></td><td class="num"><strong>20 min</strong></td><td>não</td></tr>
+            <tr><td>Identidade canônica e replicação</td><td>Pessoa</td><td class="num">2h</td><td>sim</td></tr>
+            <tr><td>Kit de marketing</td><td>Pessoa</td><td class="num">1h</td><td>sim</td></tr>
+            <tr><td>Entrega ao cliente</td><td>Pessoa</td><td class="num">1h</td><td>sim</td></tr>
+            <tr><td>Laudo de saída (dia 60)</td><td>Pessoa</td><td class="num">1h30</td><td>sim</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Total pessoa: ~19h por unidade. Total Rodrigo: 1h15</strong> — dentro do cap.</p>
+
+      <h3>Por que essas três não são delegáveis ainda</h3>
+      <ol>
+        <li><strong>Gate de aceite</strong> — recusar cliente sem chance é o coração do posicionamento e o que protege o canal. Errar aqui queima o bairro inteiro. Delegável depois de 5 casos, quando existir critério escrito calibrado em caso real.</li>
+        <li><strong>Camada técnica</strong> — decisão sua já registrada: <em>"schema/JSON-LD permanece com Rodrigo (diferencial técnico)"</em>. Delegável quando virar script verificável.</li>
+        <li><strong>Revisão final</strong> — sem histórico, publicar errado é irreversível na frente do cliente.</li>
+      </ol>
+
+      <h3>Remuneração da pessoa <span class="tag t-q">decisão sua</span></h3>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Modelo</th><th>Como</th><th>A favor</th><th>Contra</th></tr></thead>
+          <tbody>
+            <tr><td>Comissão pura</td><td class="num">25–30% do projeto</td><td>Custo zero se não vender</td><td>Ela banca 19h de risco. Rotatividade alta</td></tr>
+            <tr><td><strong>Fixo + comissão</strong> <span class="tag t-q">recomendado</span></td><td class="num">R$ 800/mês + 15%</td><td>Segura a pessoa nos 2 primeiros meses, que é onde tudo morre</td><td>Custo fixo antes de receita</td></tr>
+            <tr><td>Por entrega</td><td class="num">R$ 1.200/unidade</td><td>Simples e previsível</td><td>Não incentiva prospecção, só execução</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Com o modelo recomendado e 3 unidades no mês: custo da pessoa R$ 3.005, receita R$ 14.700 — <strong>margem líquida em torno de 76%</strong>.</p>
+
+      <h3>O motor de prospecção ativa</h3>
+      <p>O comprador está no estado "não sabe que tem o problema". Isso significa <strong>zero demanda inbound</strong>: ninguém vai te procurar. O único modelo que funciona é fabricar a consciência do problema com evidência não solicitada.</p>
+<pre>D+0   Raio-X gratuito (5 perguntas × 4 IAs, 20 min) — sem avisar o alvo
+D+1   Abordagem com o print. Pitch de 40s.
+      → Interessado: agenda o laudo completo (48h)
+      → Não: registra motivo, sai da lista por 6 meses
+D+3   Entrega do laudo. A proposta aparece aqui — nunca antes.
+D+5   Follow-up único. Um. Não existe segundo.
+D+10  Não fechou: lista de reaquecimento (90 dias)</pre>
+      <p><strong>Filtro dos alvos:</strong> tem site · já paga por presença digital · a categoria é daquelas em que o consumidor pergunta antes de escolher · não é advogado (vai para Nexum Visible, que tem gate OAB) · nenhum vínculo com a CEF.</p>
+      <p><strong>Taxa esperada</strong> <span class="tag t-e">especulação</span> — calibrar após os 20 primeiros: 40 alvos → 20 raio-x entregues → 6 aceitam o laudo → 2 a 3 fecham.</p>
+      <p><strong>O ativo que se acumula:</strong> cada raio-x é permanente. Depois de 40, existe o mapa de visibilidade em IA do bairro inteiro — argumento para os que não fecharam, base de conteúdo público, e o conteúdo público é ele próprio otimizado para IA. O produto vendendo o produto.</p>
+    </section>
+
+    <!-- ================= 07 ================= -->
+    <section id="riscos">
+      <h2><span class="num">07</span>Riscos</h2>
+      <p class="sub">Os que têm probabilidade alta estão no topo.</p>
+
+      <div class="scroll">
+        <table>
+          <thead><tr><th>Risco</th><th>Prob.</th><th>Impacto</th><th>Mitigação</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Abandono na virada do mês 2</strong> — padrão documentado em 46% dos projetos auto-gerados</td><td>Alta</td><td>Mata</td><td>Acordo escrito com a pessoa no dia 1. Checkpoint de 60 dias com critério de morte objetivo</td></tr>
+            <tr><td><strong>As IAs devolverem agregador em vez de nome local em Fortaleza</strong></td><td>Média</td><td>Mata o pitch</td><td>Etapa 1, 30 min, antes de qualquer investimento</td></tr>
+            <tr><td>Comerciante não aceitar R$ 4.900</td><td>Média</td><td>Alto</td><td>Etapa 2 — cinco conversas antes de montar qualquer coisa</td></tr>
+            <tr><td>GeoStack ou outro entrar no Nordeste</td><td>Média</td><td>Médio</td><td>Construir os 3 cases com antes/depois rápido. Eles não publicam medição</td></tr>
+            <tr><td>OpenAI abrir publicidade para pequeno anunciante</td><td>Média</td><td>Alto</td><td>Fora do seu controle. O laudo continua valendo; o argumento "porta paga fechada" cai</td></tr>
+            <tr><td>LLM mudar e zerar as citações conquistadas</td><td>Alta</td><td>Alto</td><td>Contrato de melhor esforço, entregável objetivo. Nunca prometer posição</td></tr>
+            <tr><td>Queimar o bairro aceitando cliente sem chance</td><td>Média</td><td>Alto</td><td>Gate de aceite não delegável. Recusar em público é o posicionamento</td></tr>
+            <tr><td>Cliente advogado entrar sem gate OAB</td><td>Baixa</td><td>Alto</td><td>Advogado fora deste SKU, por regra escrita</td></tr>
+            <tr><td>Prospect ligado à CEF entrar na lista</td><td>Baixa</td><td>Alto</td><td>Lista de exclusão explícita no filtro de alvos</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= 08 ================= -->
+    <section id="etapas">
+      <h2><span class="num">08</span>Próximas etapas</h2>
+      <p class="sub">Ordenadas por valor de informação dividido por custo. Nenhuma é "escrever mais documento".</p>
+
+      <div class="step">
+        <div class="idx">01</div>
+        <div>
+          <h3>O teste dos 30 minutos <span class="blocker">Bloqueante</span> <span class="cost">30 min · você</span></h3>
+          <p>Um bairro, uma categoria, 15 a 20 perguntas nas quatro IAs, registrando quem é citado. <strong>Nomear o bairro sempre</strong> — o ChatGPT não interpreta "perto de mim".</p>
+          <p><strong>Leitura:</strong> nomes locais sempre os mesmos 3–5 = janela aberta e disputada, melhor cenário, GO. Nomes variando muito = GO, com o pitch virando consistência. Só agregadores = o pitch morre, redesenhar. "Não posso recomendar" = trocar de categoria.</p>
+          <p>Guarde os prints — independente do resultado, viram o primeiro ativo do produto.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="idx">02</div>
+        <div>
+          <h3>Cinco conversas na rua <span class="blocker">Bloqueante</span> <span class="cost">2h</span></h3>
+          <p>Cinco donos do perfil de aceite. <strong>Sem vender nada.</strong> Mostrar o print e escutar. Três perguntas, nesta ordem, e depois calar a boca: "você sabia que dava pra perguntar isso pra uma IA?" · "isso te incomoda?" · "se alguém resolvesse isso pra você, quanto valeria?"</p>
+          <p>Não perguntar "você pagaria R$ 4.900?" — deixar o número vir dele. Se 3 dos 5 demonstrarem incômodo real, há demanda. Se 4 derem de ombros, o produto está adiantado em 12 meses.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="idx">03</div>
+        <div>
+          <h3>Verificar o motor Python <span class="cost">5 min · você</span></h3>
+          <p>Está em outro repositório (me aponte) · nunca virou código (é escopo, 8 a 12h) · ou você lembrou da skill, que declara Python no frontmatter mas não tem código. Não bloqueia as três primeiras vendas; bloqueia a escala.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="idx">04</div>
+        <div>
+          <h3>Varredura competitiva local, de verdade <span class="cost">1h · pessoa</span></h3>
+          <p>Minha busca é remota e enviesada para conteúdo em inglês. Falta: existe agência GEO em Fortaleza que a busca não pegou (LinkedIn, Instagram, grupos locais)? <strong>Quem já vende site para o comércio da região, e por quanto?</strong> — é com esse preço que o cliente vai te comparar, não com a GeoStack. E a GeoStack atende Nordeste remotamente?</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="idx">05</div>
+        <div>
+          <h3>Corrigir os documentos que ficaram falsos <span class="cost">20 min · você</span></h3>
+          <p>Senão a próxima sessão — sua ou de outro modelo — reproduz os mesmos erros. Nexum Visible §13: Promptado não é R$ 199. §1: a vedação a criação de site é da unidade Visible, não da casa. §9: o piso de R$ 2.000/mês é da Visible. E marcar o plano_agencia_geo como desatualizado: o gap foi ocupado.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="idx">06</div>
+        <div>
+          <h3>Construir o template do site <span class="cost">12–16h · junto com a unidade #1</span></h3>
+          <p>Sem ele, "10 dias úteis" é promessa e cada site é artesanal. HTML estático, 5 a 7 páginas, JSON-LD parametrizado, llms.txt, robots.txt liberando crawlers de IA, LCP abaixo de 2,5s, conteúdo sem dependência de JavaScript. O template precisa <strong>gerar o documento de identidade canônica como saída</strong>, não como anexo.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="idx">07</div>
+        <div>
+          <h3>Aplicar os ajustes da auditoria <span class="cost">1h de decisão</span></h3>
+          <p>Recorrente para R$ 890 · laudo avulso para R$ 890 · nenhuma ferramenta até o cliente 4 · argumento principal passa a ser os 83% de invisibilidade, não os 58% de CTR · argumento de preço passa a ser a comparação anual com a GeoStack · incluir orientação de avaliações no escopo.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="idx">08</div>
+        <div>
+          <h3>Unidade #1, o caso zero <span class="cost">depois de 1, 2 e 6</span></h3>
+          <p>Alguém que você conhece, na categoria que passou no gate, de graça ou a custo, <strong>com autorização escrita de uso público do resultado</strong>. Objetivo real: cronometrar as 19h estimadas, achar onde trava, e produzir o primeiro antes/depois brasileiro — o ativo que nenhum concorrente tem e que a GeoStack não publica.</p>
+        </div>
+      </div>
+
+      <h4>Sequência</h4>
+<pre>Etapa 1  (30 min) ─┐
+                   ├─▶ se GO ─▶ Etapas 3+5+7 (1h30) ─▶ Etapa 6 + Unidade #1
+Etapa 2  (2h)     ─┘                  │
+                            Etapa 4 (1h, em paralelo)
+
+  se 1 ou 2 falhar ─▶ redesenhar antes de gastar um dia</pre>
+      <p><strong>Até a decisão go/no-go fundamentada: 3 horas.</strong> Até a primeira unidade paga <span class="tag t-i">inferência</span>: 3 a 4 semanas.</p>
+
+      <div class="note">
+        <span class="lbl">O que não fazer agora</span>
+        <p>Escrever mais documento de produto (você tem quatro — é o padrão) · comprar ferramenta antes do cliente 4 · registrar marca, comprar domínio ou fazer identidade visual antes da etapa 1 · treinar a pessoa antes de saber se o pitch funciona · prospectar antes de ter o print que prova o problema.</p>
+      </div>
+    </section>
+
+    <!-- ================= 09 ================= -->
+    <section id="fontes">
+      <h2><span class="num">09</span>Fontes</h2>
+      <p class="sub">Tudo que foi verificado contra fonte externa em 17/08/2026.</p>
+      <ul class="srclist">
+        <li><a href="https://sparktoro.com/blog/in-2026-less-than-one-third-of-google-searches-still-send-a-click/">SparkToro — Less than One Third of Google Searches Still Send a Click (2026)</a></li>
+        <li><a href="https://searchengineland.com/google-zero-click-searches-2026-study-479717">Search Engine Land — Zero-click atinge 68%</a></li>
+        <li><a href="https://ahrefs.com/blog/ai-overviews-reduce-clicks/">Ahrefs — AI Overviews Reduce Clicks by 34.5%</a></li>
+        <li><a href="https://www.medianama.com/2026/02/223-google-ai-overviews-click-through-rates-58-study/">Medianama — AI Overviews reduzem cliques em 58%</a></li>
+        <li><a href="https://www.localfalcon.com/blog/the-ai-visibility-crisis-why-83-percent-of-restaurants-dont-exist-in-chatgpt">Local Falcon — The AI Visibility Crisis: 83% of Restaurants</a></li>
+        <li><a href="https://www.technewsworld.com/story/study-finds-most-restaurants-missing-from-ai-recommendations-180396.html">TechNewsWorld — Most Restaurants Missing From AI Recommendations</a></li>
+        <li><a href="https://mapatlas.eu/blog/83-percent-of-restaurants-dont-exist-in-chatgpt">MapAtlas — 83% of Restaurants Are Invisible on ChatGPT</a></li>
+        <li><a href="https://lasvegassun.com/news/2026/may/07/83-of-restaurants-are-invisible-in-ai-search-new-u/">Uberall (via Las Vegas Sun) — Restaurant AI Discovery Gap</a></li>
+        <li><a href="https://promptado.com/planos">Promptado — Planos e Preços</a></li>
+        <li><a href="https://geostack.com.br/agencia-de-geo-especialistas-em-otimizacao-para-ia-generativa/">GeoStack — Agência de GEO</a></li>
+        <li><a href="https://geostack.com.br/mapa-das-agencias-de-geo/">GeoStack — Mapa das Agências de GEO</a></li>
+        <li><a href="https://alexandrecaramaschi.com/artigos/quanto-custa-consultoria-geo">Caramaschi — Quanto custa consultoria GEO no Brasil em 2026</a></li>
+        <li><a href="https://levolu.com.br/blog/quanto-custa-criar-site-profissional-2026">Levolu — Quanto custa criar site profissional em 2026</a></li>
+        <li><a href="https://seocriacao.com.br/quanto-custa-criar-um-site-profissional-em-2026/">SEO Criação — Tabela de preços de sites 2026</a></li>
+        <li><a href="https://arxiv.org/abs/2311.09735">Aggarwal et al. — GEO: Generative Engine Optimization (ACM SIGKDD 2024)</a></li>
+      </ul>
+
+      <hr>
+      <h4>Convenção de confiança usada em todo o dossiê</h4>
+      <p style="font-size:.9rem"><span class="tag t-v">Verificado</span> fonte primária lida nesta sessão &nbsp;·&nbsp; <span class="tag t-i">Inferência</span> derivado de material verificado &nbsp;·&nbsp; <span class="tag t-e">Especulação</span> hipótese não testada &nbsp;·&nbsp; <span class="tag t-q">A verificar</span> não usar como base de decisão.</p>
+      <p style="font-size:.9rem;color:var(--ink-3)">Fontes internas: Notion (Nexum Visible, GEO Nexum Brand Intelligence, Terceira Camada), Google Drive (plano_agencia_geo, matriz-renda-extra, documentos GEO de referência) e skills sincronizadas.</p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const links = [...document.querySelectorAll('nav a')];
+  const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  const seen = new Set();
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => e.isIntersecting ? seen.add(e.target.id) : seen.delete(e.target.id));
+    const first = [...map.keys()].find(id => seen.has(id));
+    links.forEach(a => a.classList.toggle('active', a === map.get(first)));
+  }, { rootMargin: '-10% 0px -70% 0px' });
+  document.querySelectorAll('main section').forEach(s => obs.observe(s));
+</script>
