@@ -1,0 +1,471 @@
+<title>Gate 1 Fortaleza</title>
+<style>
+  :root {
+    --ground: #F3F5F7; --surface: #FFFFFF; --surface-2: #EAEDF1;
+    --ink: #12161D; --ink-2: #4A525E; --ink-3: #7A838F;
+    --rule: #DCE1E7; --rule-strong: #C3CAD3;
+    --accent: #1B47C7; --accent-soft: #E4EAFB;
+    --ok: #0B6B4F; --ok-soft: #DCEFE7;
+    --warn: #8A5606; --warn-soft: #F5E9D4;
+    --bad: #99342A; --bad-soft: #F6E1DE;
+    --shadow: 0 1px 2px rgba(18,22,29,.05), 0 8px 24px -12px rgba(18,22,29,.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0D1016; --surface: #151A22; --surface-2: #1D232D;
+      --ink: #E7EAEF; --ink-2: #A5ADBA; --ink-3: #6D7683;
+      --rule: #262D38; --rule-strong: #39424F;
+      --accent: #7A9EFF; --accent-soft: #1A2440;
+      --ok: #45C296; --ok-soft: #102A22;
+      --warn: #DBA646; --warn-soft: #2C2313;
+      --bad: #E4796A; --bad-soft: #331C19;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0D1016; --surface: #151A22; --surface-2: #1D232D;
+    --ink: #E7EAEF; --ink-2: #A5ADBA; --ink-3: #6D7683;
+    --rule: #262D38; --rule-strong: #39424F;
+    --accent: #7A9EFF; --accent-soft: #1A2440;
+    --ok: #45C296; --ok-soft: #102A22;
+    --warn: #DBA646; --warn-soft: #2C2313;
+    --bad: #E4796A; --bad-soft: #331C19;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 22px 96px; }
+
+  header { border-bottom: 2px solid var(--ink); padding: 52px 0 20px; margin-bottom: 34px; }
+  h1 {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-size: clamp(2rem, 5.5vw, 2.9rem); font-weight: 400;
+    letter-spacing: -.02em; line-height: 1.05; margin: 0 0 12px; text-wrap: balance;
+  }
+  header p { margin: 0 0 16px; color: var(--ink-2); max-width: 56ch; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .68rem; letter-spacing: .07em; text-transform: uppercase;
+    background: var(--surface-2); color: var(--ink-2);
+    padding: 4px 9px; border-radius: 3px; font-weight: 600;
+  }
+  .chip.hi { background: var(--accent-soft); color: var(--accent); }
+
+  section { margin-bottom: 54px; scroll-margin-top: 20px; }
+  h2 {
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 1.55rem; font-weight: 400; letter-spacing: -.015em;
+    margin: 0 0 5px; display: flex; align-items: baseline; gap: 13px; text-wrap: balance;
+  }
+  h2 .ph {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .74rem; letter-spacing: .09em; color: var(--accent); flex: none;
+  }
+  .sub { color: var(--ink-3); font-size: .9rem; margin: 0 0 24px; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+  h3 { font-size: 1rem; font-weight: 650; margin: 30px 0 9px; }
+  h4 {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .68rem; letter-spacing: .11em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; margin: 26px 0 10px;
+  }
+  p { margin: 0 0 13px; }
+  ul, ol { margin: 0 0 15px; padding-left: 20px; }
+  li { margin-bottom: 5px; }
+  a { color: var(--accent); text-underline-offset: 2px; }
+  strong { font-weight: 650; }
+  code {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .86em; background: var(--surface-2); padding: 1px 5px; border-radius: 3px;
+  }
+
+  /* prompt block with copy */
+  .prompt { background: var(--surface); border: 1px solid var(--rule); border-radius: 5px; margin: 0 0 16px; overflow: hidden; }
+  .prompt-bar {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 9px 12px 9px 14px; background: var(--surface-2); border-bottom: 1px solid var(--rule);
+  }
+  .prompt-bar .lbl {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .66rem; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600;
+  }
+  .copy {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .66rem; letter-spacing: .07em; text-transform: uppercase; font-weight: 600;
+    background: var(--surface); color: var(--accent); border: 1px solid var(--rule-strong);
+    padding: 4px 10px; border-radius: 3px; cursor: pointer; white-space: nowrap;
+    transition: background .15s, color .15s;
+  }
+  .copy:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .copy.done { background: var(--ok-soft); color: var(--ok); border-color: var(--ok); }
+  .prompt pre {
+    margin: 0; padding: 14px 16px; overflow-x: auto; background: var(--surface);
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .78rem; line-height: 1.65; color: var(--ink);
+  }
+
+  /* callouts */
+  .box { border-radius: 5px; padding: 15px 18px; font-size: .9rem; margin: 0 0 20px; }
+  .box p:last-child { margin-bottom: 0; }
+  .box .lbl {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .63rem; letter-spacing: .1em; text-transform: uppercase;
+    font-weight: 700; display: block; margin-bottom: 6px;
+  }
+  .box.i { background: var(--accent-soft); } .box.i .lbl { color: var(--accent); }
+  .box.w { background: var(--warn-soft); } .box.w .lbl { color: var(--warn); }
+  .box.d { background: var(--bad-soft); } .box.d .lbl { color: var(--bad); }
+
+  /* tables */
+  .scroll { overflow-x: auto; margin: 0 0 22px; border: 1px solid var(--rule); border-radius: 5px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: .855rem; }
+  th, td { text-align: left; padding: 10px 13px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  thead th {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .64rem; letter-spacing: .09em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600; background: var(--surface-2); white-space: nowrap;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* category cards */
+  .cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 0 0 22px; }
+  .cat { background: var(--surface); border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: 5px; padding: 15px 16px; box-shadow: var(--shadow); }
+  .cat .n {
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: .68rem; color: var(--ink-3); letter-spacing: .08em; display: block; margin-bottom: 5px;
+  }
+  .cat h3 { margin: 0 0 7px; font-size: .98rem; }
+  .cat p { font-size: .84rem; color: var(--ink-2); margin: 0; }
+
+  /* checklist */
+  .check { list-style: none; padding: 0; margin: 0 0 20px; }
+  .check li { margin: 0; border-bottom: 1px solid var(--rule); }
+  .check li:last-child { border-bottom: none; }
+  .check label { display: flex; gap: 11px; align-items: flex-start; padding: 10px 2px; cursor: pointer; font-size: .9rem; }
+  .check input { margin: 4px 0 0; accent-color: var(--accent); width: 15px; height: 15px; flex: none; cursor: pointer; }
+  .check input:checked + span { color: var(--ink-3); text-decoration: line-through; }
+
+  /* decision rows */
+  .dec { display: grid; grid-template-columns: 26px minmax(0,1fr); gap: 13px; padding: 14px 0; border-bottom: 1px solid var(--rule); align-items: start; }
+  .dec:last-of-type { border-bottom: none; }
+  .dec .mk { font-size: 1.05rem; line-height: 1.4; }
+  .dec p { margin: 0; font-size: .89rem; }
+  .dec .h { font-weight: 650; display: block; margin-bottom: 3px; font-size: .93rem; }
+
+  hr { border: none; border-top: 1px solid var(--rule); margin: 30px 0; }
+  .foot { font-size: .84rem; color: var(--ink-3); }
+
+  @media (max-width: 620px) {
+    header { padding-top: 32px; }
+    .prompt pre { font-size: .72rem; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <h1>Gate 1 Fortaleza</h1>
+    <p>Roteiro de campo para descobrir se as IAs citam negócios locais da Cidade dos Funcionários e do Água Fria — ou se devolvem só agregador. É o teste que decide se o produto existe na forma desenhada.</p>
+    <div class="chips">
+      <span class="chip hi">Bloqueante</span>
+      <span class="chip">Fase A · 15 min</span>
+      <span class="chip">Fase B · 45 min</span>
+      <span class="chip">17 ago 2026</span>
+    </div>
+  </header>
+
+  <section id="premissa">
+    <div class="box w">
+      <span class="lbl">Confirme antes de rodar</span>
+      <p>Estou assumindo que <strong>Cidade dos Funcionários e Água Fria são bairros residenciais vizinhos de classe média na zona sul de Fortaleza</strong>, com comércio de serviço razoavelmente denso. Se essa leitura estiver errada, as três categorias abaixo mudam.</p>
+      <p style="margin-top:9px">Não coloquei pontos de referência físicos (avenida, shopping, praça) nas perguntas de propósito: eu poderia errar o ponto e contaminar o teste — e o que importa para a IA é o <strong>nome do bairro e da cidade</strong>, não a referência.</p>
+    </div>
+  </section>
+
+  <section id="metodo">
+    <h2><span class="ph">Método</span>Por que duas fases</h2>
+    <p class="sub">Testar uma categoria só é o erro mais provável aqui.</p>
+    <p>Se você testar uma única categoria e der negativo, não saberá se o produto não funciona nesses bairros <em>ou</em> se a categoria escolhida era ruim. A Fase A elimina essa ambiguidade por quinze minutos.</p>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th></th><th>Fase A — Triagem</th><th>Fase B — Definitivo</th></tr></thead>
+        <tbody>
+          <tr><td>Categorias</td><td>3</td><td>1, a vencedora</td></tr>
+          <tr><td>Perguntas</td><td>5, em bloco único</td><td>20, uma a uma</td></tr>
+          <tr><td>IAs</td><td>ChatGPT, Gemini</td><td>ChatGPT, Gemini, Perplexity, Claude</td></tr>
+          <tr><td>Colagens</td><td>6</td><td>80</td></tr>
+          <tr><td>Serve para</td><td>decidir a categoria</td><td>virar a metodologia do Laudo de Entrada</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box i">
+      <span class="lbl">Sobre o bloco único da Fase A</span>
+      <p>Perguntar as cinco de uma vez altera o comportamento de recuperação — a IA faz um fan-out combinado em vez de cinco separados. É aceitável para triagem direcional, <strong>não</strong> para o teste definitivo. Por isso a Fase B é uma a uma: ela vira a metodologia que o cliente compra, e precisa refletir como uma pessoa real pergunta.</p>
+    </div>
+
+    <div class="box d">
+      <span class="lbl">Condição de validade</span>
+      <p>Rode em <strong>aba anônima ou conta limpa</strong>, sem histórico e sem memória ativa. Se a IA já te conhece, ela devolve a resposta que você quer ouvir e o teste vira inútil.</p>
+    </div>
+  </section>
+
+  <section id="categorias">
+    <h2><span class="ph">Fase A</span>As três categorias</h2>
+    <p class="sub">Filtradas pelo perfil de aceite: tem site · já paga por presença digital · o consumidor pesquisa antes de escolher · quem decide é o dono.</p>
+
+    <div class="cats">
+      <div class="cat">
+        <span class="n">01</span>
+        <h3>Clínica odontológica</h3>
+        <p>Ticket alto por cliente, já compra marketing por hábito, e ninguém escolhe dentista por impulso — pesquisa sempre.</p>
+      </div>
+      <div class="cat">
+        <span class="n">02</span>
+        <h3>Clínica veterinária</h3>
+        <p>Bairro residencial familiar. Dono de pet pesquisa muito e troca pouco: valor de vida do cliente alto.</p>
+      </div>
+      <div class="cat">
+        <span class="n">03</span>
+        <h3>Academia ou studio</h3>
+        <p>Compra marketing de forma agressiva, decisão por proximidade somada a pesquisa, receita recorrente.</p>
+      </div>
+    </div>
+
+    <p><strong>Descartadas de propósito:</strong> restaurante — é a categoria do estudo americano, mas margem fina e resistência a R$ 4.900; farmácia e conveniência — compra por proximidade pura, ninguém pergunta; advogado — vai para o SKU Nexum Visible, que tem gate de compliance OAB.</p>
+
+    <h3>O prompt de triagem</h3>
+    <p>Cole uma vez por categoria, no ChatGPT e no Gemini. Seis colagens.</p>
+
+    <div class="prompt">
+      <div class="prompt-bar"><span class="lbl">Categoria 01 · odontológica</span><button class="copy" type="button">Copiar</button></div>
+      <pre>Responda como se eu fosse um morador de Fortaleza procurando um serviço.
+Responda cada pergunta de forma direta e separada.
+
+1. Qual a melhor clínica odontológica na Cidade dos Funcionários, em Fortaleza?
+2. Me indica uma clínica odontológica boa no bairro Água Fria, em Fortaleza.
+3. Estou me mudando para a Cidade dos Funcionários, em Fortaleza.
+   Que clínica odontológica você recomenda na região?
+4. Quais são as clínicas odontológicas mais bem avaliadas da Cidade dos
+   Funcionários e do Água Fria, em Fortaleza?
+5. Compare as melhores opções de clínica odontológica nessa região de Fortaleza.</pre>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-bar"><span class="lbl">Categoria 02 · veterinária</span><button class="copy" type="button">Copiar</button></div>
+      <pre>Responda como se eu fosse um morador de Fortaleza procurando um serviço.
+Responda cada pergunta de forma direta e separada.
+
+1. Qual a melhor clínica veterinária na Cidade dos Funcionários, em Fortaleza?
+2. Me indica uma clínica veterinária boa no bairro Água Fria, em Fortaleza.
+3. Estou me mudando para a Cidade dos Funcionários, em Fortaleza.
+   Que clínica veterinária você recomenda na região?
+4. Quais são as clínicas veterinárias mais bem avaliadas da Cidade dos
+   Funcionários e do Água Fria, em Fortaleza?
+5. Compare as melhores opções de clínica veterinária nessa região de Fortaleza.</pre>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-bar"><span class="lbl">Categoria 03 · academia</span><button class="copy" type="button">Copiar</button></div>
+      <pre>Responda como se eu fosse um morador de Fortaleza procurando um serviço.
+Responda cada pergunta de forma direta e separada.
+
+1. Qual a melhor academia na Cidade dos Funcionários, em Fortaleza?
+2. Me indica uma academia boa no bairro Água Fria, em Fortaleza.
+3. Estou me mudando para a Cidade dos Funcionários, em Fortaleza.
+   Que academia você recomenda na região?
+4. Quais são as academias mais bem avaliadas da Cidade dos Funcionários
+   e do Água Fria, em Fortaleza?
+5. Compare as melhores opções de academia nessa região de Fortaleza.</pre>
+    </div>
+
+    <h4>Checklist das seis colagens</h4>
+    <ul class="check">
+      <li><label><input type="checkbox"><span>Odontológica no <strong>ChatGPT</strong></span></label></li>
+      <li><label><input type="checkbox"><span>Odontológica no <strong>Gemini</strong></span></label></li>
+      <li><label><input type="checkbox"><span>Veterinária no <strong>ChatGPT</strong></span></label></li>
+      <li><label><input type="checkbox"><span>Veterinária no <strong>Gemini</strong></span></label></li>
+      <li><label><input type="checkbox"><span>Academia no <strong>ChatGPT</strong></span></label></li>
+      <li><label><input type="checkbox"><span>Academia no <strong>Gemini</strong></span></label></li>
+    </ul>
+
+    <h4>Registro</h4>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Categoria</th><th>IA</th><th>Citou nome local?</th><th>Quais nomes</th><th>Agregador</th></tr></thead>
+        <tbody>
+          <tr><td>Odontológica</td><td>ChatGPT</td><td></td><td></td><td></td></tr>
+          <tr><td>Odontológica</td><td>Gemini</td><td></td><td></td><td></td></tr>
+          <tr><td>Veterinária</td><td>ChatGPT</td><td></td><td></td><td></td></tr>
+          <tr><td>Veterinária</td><td>Gemini</td><td></td><td></td><td></td></tr>
+          <tr><td>Academia</td><td>ChatGPT</td><td></td><td></td><td></td></tr>
+          <tr><td>Academia</td><td>Gemini</td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="leitura">
+    <h2><span class="ph">Leitura</span>Como interpretar a Fase A</h2>
+    <p class="sub">Quatro cenários. Só um é morte.</p>
+
+    <div class="dec">
+      <div class="mk">✅</div>
+      <div><span class="h">Nomes de negócios locais reais, repetindo entre as 5 perguntas</span>
+      <p><strong>Janela aberta e disputada</strong> — o melhor cenário possível. Há concorrente para mostrar ao dono, e há fila para ele querer furar. Essa categoria vai para a Fase B.</p></div>
+    </div>
+    <div class="dec">
+      <div class="mk">✅</div>
+      <div><span class="h">Nomes locais, mas variando muito entre ChatGPT e Gemini</span>
+      <p><strong>Janela aberta e frouxa.</strong> Também serve. O pitch vira consistência ("cada IA fala uma coisa sobre a sua região") em vez de substituição.</p></div>
+    </div>
+    <div class="dec">
+      <div class="mk">❌</div>
+      <div><span class="h">Só agregador — Doctoralia, GuiaMais, iFood, Google Maps genérico</span>
+      <p>Não há concorrente a mostrar. <strong>O pitch morre nessa categoria.</strong> Descarta e segue para a próxima.</p></div>
+    </div>
+    <div class="dec">
+      <div class="mk">❌</div>
+      <div><span class="h">"Não posso recomendar" ou resposta puramente genérica</span>
+      <p>Categoria fora do jogo. Descarta.</p></div>
+    </div>
+
+    <h4>Regra de decisão</h4>
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Resultado</th><th>Ação</th></tr></thead>
+        <tbody>
+          <tr><td><strong>2 ou 3 categorias passam</strong></td><td>Escolha a de maior ticket para a Fase B. As outras viram o pipeline seguinte</td></tr>
+          <tr><td><strong>1 categoria passa</strong></td><td>É essa. Vai para a Fase B</td></tr>
+          <tr><td><strong>Nenhuma passa</strong></td><td><strong>NO-GO na forma atual.</strong> Não monte site nenhum. O produto provavelmente vira "aparecer no agregador que a IA cita", que é outro produto. Me traga o resultado</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="faseb">
+    <h2><span class="ph">Fase B</span>Teste definitivo</h2>
+    <p class="sub">20 perguntas, uma a uma, nas quatro IAs. 80 respostas com print. Só rode se a Fase A passar.</p>
+
+    <p>Esta é a metodologia que vira o <strong>Bloco A do produto</strong> — o Laudo de Entrada que o cliente paga. Rodar direito aqui é construir o ativo, não só testar.</p>
+    <p>Substitua <code>[CAT]</code> pela categoria vencedora e <code>[SERVIÇO]</code> pelo serviço específico dela.</p>
+
+    <div class="prompt">
+      <div class="prompt-bar"><span class="lbl">Informacional · descoberta pura</span><button class="copy" type="button">Copiar</button></div>
+      <pre>1.  Qual a melhor [CAT] na Cidade dos Funcionários, em Fortaleza?
+2.  Me indica uma [CAT] boa no bairro Água Fria, em Fortaleza.
+3.  Quais [CAT] existem na Cidade dos Funcionários, Fortaleza?
+4.  [CAT] bem avaliada na região da Cidade dos Funcionários e Água Fria, Fortaleza.
+5.  Estou me mudando para a Cidade dos Funcionários, em Fortaleza.
+    Que [CAT] você recomenda?</pre>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-bar"><span class="lbl">Comparativa · já tem opções</span><button class="copy" type="button">Copiar</button></div>
+      <pre>6.  Compare as melhores [CAT] da Cidade dos Funcionários, em Fortaleza.
+7.  Qual a diferença entre as principais [CAT] do Água Fria, Fortaleza?
+8.  Entre as [CAT] da Cidade dos Funcionários, qual tem melhor custo-benefício?
+9.  Qual [CAT] da região da Cidade dos Funcionários é mais confiável?
+10. Vale mais a pena ir numa [CAT] da Cidade dos Funcionários ou do
+    Água Fria, em Fortaleza?</pre>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-bar"><span class="lbl">Transacional · quer contratar agora</span><button class="copy" type="button">Copiar</button></div>
+      <pre>11. Preciso de [SERVIÇO] na Cidade dos Funcionários, Fortaleza. Onde faço?
+12. [CAT] no Água Fria, Fortaleza, que atenda no sábado.
+13. [CAT] na Cidade dos Funcionários que aceite plano ou parcelamento.
+14. Qual [CAT] da Cidade dos Funcionários, Fortaleza, atende com hora
+    marcada e sem espera?
+15. Quero agendar [SERVIÇO] hoje na região da Cidade dos Funcionários,
+    Fortaleza. Quem atende?</pre>
+    </div>
+
+    <div class="prompt">
+      <div class="prompt-bar"><span class="lbl">Decisão e reputação · o momento da escolha</span><button class="copy" type="button">Copiar</button></div>
+      <pre>16. Qual [CAT] da Cidade dos Funcionários, Fortaleza, tem as melhores avaliações?
+17. Alguma [CAT] da Cidade dos Funcionários ou Água Fria é referência em [SERVIÇO]?
+18. Quero uma [CAT] em Fortaleza especializada em [SERVIÇO]. Qual indica?
+19. Que [CAT] da zona sul de Fortaleza você indicaria para uma família?
+20. O que você sabe sobre [NOME DE UM NEGÓCIO REAL DA REGIÃO]?</pre>
+    </div>
+
+    <div class="box i">
+      <span class="lbl">A pergunta 20 é a mais importante</span>
+      <p>E a mais fácil de esquecer. Escolha um negócio real do bairro, de preferência o mais conhecido da categoria. A resposta te diz três coisas de uma vez: se a IA sabe que ele existe, o que ela diz sobre ele, e se o que ela diz está certo.</p>
+      <p style="margin-top:9px"><strong>Esse é o slide que fecha a venda</strong> — mostrar pro dono o que a IA fala dele quando ele não está olhando.</p>
+    </div>
+
+    <h4>O que sai dos 80 registros</h4>
+    <ul>
+      <li><strong>Taxa de citação local</strong> — em quantas das 80 respostas apareceu ao menos um negócio nomeado</li>
+      <li><strong>Ranking de dominância</strong> — quais nomes mais se repetem, e em que posição</li>
+      <li><strong>Concentração</strong> — quantos nomes diferentes no total. Poucos = mercado travado. Muitos = frouxo</li>
+      <li><strong>Divergência entre IAs</strong> — o mesmo nome aparece nas quatro, ou cada uma diz uma coisa</li>
+      <li><strong>Cobertura por intenção</strong> — informacional, comparativa, transacional, decisão. Onde há mais buraco</li>
+    </ul>
+
+    <div class="scroll">
+      <table>
+        <thead><tr><th>Resultado da Fase B</th><th>Significa</th><th>Próximo passo</th></tr></thead>
+        <tbody>
+          <tr><td>3 a 5 nomes dominam a maioria</td><td>Mercado travado por poucos. <strong>Melhor cenário</strong></td><td>Etapa 2. Os dominantes viram o "olha quem tá na sua frente"</td></tr>
+          <tr><td>Muitos nomes, pouca repetição</td><td>Mercado frouxo, ninguém consolidou</td><td>GO. Pitch vira "dá pra ser o primeiro a consolidar"</td></tr>
+          <tr><td>Poucos nomes e muito agregador</td><td>Janela parcial</td><td>GO com ressalva. A identidade canônica nos diretórios vira ainda mais central</td></tr>
+          <tr><td>Quase só agregador</td><td>O pitch morre</td><td>NO-GO nesta forma. Me traga o resultado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="box w">
+      <span class="lbl">Guarde tudo, em qualquer cenário</span>
+      <p>Se der GO, esses 80 prints são o primeiro ativo do produto e a base do conteúdo público — <em>"o que a IA responde quando perguntam pela sua clínica na Cidade dos Funcionários"</em>. Se der NO-GO, são a prova que economizou semanas.</p>
+    </div>
+  </section>
+
+  <section id="etapa2">
+    <h2><span class="ph">Depois</span>Etapa 2, no mesmo território</h2>
+    <p class="sub">Cinco donos da categoria vencedora. Sem vender nada.</p>
+
+    <p>Mostrar o print e escutar. Três perguntas, nesta ordem, e depois calar a boca:</p>
+    <div class="prompt">
+      <div class="prompt-bar"><span class="lbl">Roteiro de rua</span><button class="copy" type="button">Copiar</button></div>
+      <pre>1. "Você sabia que dava pra perguntar isso pra uma IA?"     → consciência
+2. "Isso te incomoda?"                                      → intensidade
+3. "Se alguém resolvesse isso pra você, quanto valeria?"     → preço</pre>
+    </div>
+    <p><strong>Não</strong> perguntar "você pagaria R$ 4.900?". Deixar o número vir dele.</p>
+    <p><strong>3 dos 5 com incômodo real</strong> → tem demanda, segue para o template e a unidade #1. <strong>4 dos 5 dando de ombros</strong> → o produto está adiantado em doze meses.</p>
+
+    <hr>
+    <p class="foot">Anexo operacional do <strong>Dossiê Primeira Resposta</strong>. Território: Cidade dos Funcionários e Água Fria, Fortaleza/CE. Compilado em 17 de agosto de 2026.</p>
+  </section>
+
+</div>
+
+<script>
+  document.querySelectorAll('.copy').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const text = btn.closest('.prompt').querySelector('pre').innerText;
+      try { await navigator.clipboard.writeText(text); }
+      catch (e) {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch (_) {}
+        document.body.removeChild(ta);
+      }
+      btn.textContent = 'Copiado';
+      btn.classList.add('done');
+      setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('done'); }, 1800);
+    });
+  });
+</script>
